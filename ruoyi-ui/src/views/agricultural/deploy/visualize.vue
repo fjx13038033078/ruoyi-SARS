@@ -27,19 +27,21 @@
           <div class="legend-item"><span class="legend-grid"></span>网格单元</div>
 
           <el-divider>操作提示</el-divider>
-          <div class="tip-text">? 滚轮缩放地图</div>
-          <div class="tip-text">? 拖拽平移视图</div>
-          <div class="tip-text">? 悬停节点查看详情</div>
-          <div class="tip-text">? 点击节点高亮同簇</div>
+          <div class="tip-text">滚轮缩放地图</div>
+          <div class="tip-text">?拖拽平移视图</div>
+          <div class="tip-text">悬停节点查看详情</div>
+          <div class="tip-text">点击节点高亮同簇</div>
 
           <el-divider>快捷操作</el-divider>
-          <el-button size="mini" icon="el-icon-refresh-right" @click="resetView" style="width:100%">重置视图</el-button>
-          <el-button size="mini" icon="el-icon-view" @click="toggleCoverage" style="width:100%;margin-top:6px">
-            {{ showCoverage ? '隐藏覆盖范围' : '显示覆盖范围' }}
-          </el-button>
-          <el-button size="mini" icon="el-icon-s-grid" @click="toggleGrid" style="width:100%;margin-top:6px">
-            {{ showGrid ? '隐藏网格线' : '显示网格线' }}
-          </el-button>
+          <div class="quick-actions">
+            <el-button size="mini" icon="el-icon-refresh-right" class="quick-actions__btn" @click="resetView">重置视图</el-button>
+            <el-button size="mini" icon="el-icon-view" class="quick-actions__btn" @click="toggleCoverage">
+              {{ showCoverage ? '隐藏覆盖' : '显示覆盖' }}
+            </el-button>
+            <el-button size="mini" icon="el-icon-s-grid" class="quick-actions__btn" @click="toggleGrid">
+              {{ showGrid ? '隐藏网格' : '显示网格' }}
+            </el-button>
+          </div>
 
           <el-divider>节点列表</el-divider>
           <div class="node-list">
@@ -317,6 +319,31 @@ export default {
 .legend-circle { width: 18px; height: 18px; border-radius: 50%; border: 1.5px dashed #409eff; background: rgba(64,158,255,0.1); display: inline-block; }
 .legend-grid { width: 16px; height: 16px; border: 1px solid #d4e8c2; background: #f0f9eb; display: inline-block; }
 .tip-text { font-size: 12px; color: #909399; margin: 3px 0; }
+/* 快捷操作：三按钮同一行等高、等分宽度 */
+.quick-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 6px;
+}
+.quick-actions__btn {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0 !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  white-space: normal;
+  line-height: 1.2;
+  height: auto !important;
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.quick-actions__btn ::v-deep [class*='el-icon-'] + span {
+  margin-left: 2px;
+}
 .node-list { max-height: 240px; overflow-y: auto; }
 .node-item { display: flex; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 4px; cursor: pointer; font-size: 12px; color: #606266; }
 .node-item:hover, .node-item.active { background: #ecf5ff; }

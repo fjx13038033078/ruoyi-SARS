@@ -14,7 +14,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="评分">
+            <el-form-item label="评分" class="comment-rate-form-item">
               <el-rate v-model="postForm.rating" show-score />
             </el-form-item>
           </el-col>
@@ -181,4 +181,25 @@ export default {
 
 <style scoped>
 .post-card { border-left: 4px solid #409eff; }
+
+/* 「评分」标签与五角星、分数垂直居中对齐（行高与 Element 默认表单项一致） */
+.comment-rate-form-item ::v-deep .el-form-item__label {
+  line-height: 40px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.comment-rate-form-item ::v-deep .el-form-item__content {
+  line-height: 40px;
+  display: flex;
+  align-items: center;
+}
+.comment-rate-form-item ::v-deep .el-form-item__content .el-rate {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+.comment-rate-form-item ::v-deep .el-rate__text {
+  line-height: 1;
+  vertical-align: middle;
+}
 </style>
