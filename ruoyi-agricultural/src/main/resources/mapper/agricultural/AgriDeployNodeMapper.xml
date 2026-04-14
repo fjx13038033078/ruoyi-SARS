@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.agricultural.mapper.AgriDeployNodeMapper">
+
+    <resultMap type="AgriDeployNode" id="AgriDeployNodeResult">
+        <id     property="nodeId"         column="node_id"          />
+        <result property="schemeId"       column="scheme_id"        />
+        <result property="nodeCode"       column="node_code"        />
+        <result property="nodeType"       column="node_type"        />
+        <result property="posX"           column="pos_x"            />
+        <result property="posY"           column="pos_y"            />
+        <result property="coverageRadius" column="coverage_radius"  />
+        <result property="energyLevel"    column="energy_level"     />
+        <result property="clusterId"      column="cluster_id"       />
+        <result property="isClusterHead"  column="is_cluster_head"  />
+    </resultMap>
+
+    <select id="selectNodesBySchemeId" parameterType="Long" resultMap="AgriDeployNodeResult">
+        select node_id, scheme_id, node_code, node_type, pos_x, pos_y,
+               coverage_radius, energy_level, cluster_id, is_cluster_head
+        from agri_deploy_node
+        where scheme_id = #{schemeId}
+        ORDER BY node_id
+    </select>
+
+    <insert id="batchInsertNodes" parameterType="java.util.List">
+        insert into agri_deploy_node(scheme_id, node_code, node_type, pos_x, pos_y,
+            coverage_radius, energy_level, cluster_id, is_cluster_head)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.schemeId}, #{item.nodeCode}, #{item.nodeType}, #{item.posX}, #{item.posY},
+             #{item.coverageRadius}, #{item.energyLevel}, #{item.clusterId}, #{item.isClusterHead})
+        </foreach>
+    </insert>
+
+    <delete id="deleteNodesBySchemeId" parameterType="Long">
+        delete from agri_deploy_node where scheme_id = #{schemeId}
+    </delete>
+
+</mapper>

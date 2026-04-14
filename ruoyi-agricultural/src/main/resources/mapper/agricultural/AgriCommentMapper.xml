@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.agricultural.mapper.AgriCommentMapper">
+
+    <resultMap type="AgriComment" id="AgriCommentResult">
+        <id     property="commentId"   column="comment_id"   />
+        <result property="content"     column="content"      />
+        <result property="imageUrls"   column="image_urls"   />
+        <result property="rating"      column="rating"       />
+        <result property="targetType"  column="target_type"  />
+        <result property="targetId"    column="target_id"    />
+        <result property="isAnonymous" column="is_anonymous" />
+        <result property="userId"      column="user_id"      />
+        <result property="userName"    column="user_name"    />
+        <result property="status"      column="status"       />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"  column="create_time"  />
+    </resultMap>
+
+    <sql id="selectCommentVo">
+        select comment_id, content, image_urls, rating, target_type, target_id,
+               is_anonymous, user_id, user_name, status, create_by, create_time
+        from agri_comment
+    </sql>
+
+    <select id="selectCommentList" parameterType="AgriComment" resultMap="AgriCommentResult">
+        <include refid="selectCommentVo"/>
+        <where>
+            <if test="targetType != null and targetType != ''">AND target_type = #{targetType}</if>
+            <if test="targetId != null">AND target_id = #{targetId}</if>
+            <if test="status != null and status != ''">AND status = #{status}</if>
+            <if test="userId != null">AND user_id = #{userId}</if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectCommentById" parameterType="Long" resultMap="AgriCommentResult">
+        <include refid="selectCommentVo"/>
+        where comment_id = #{commentId}
+    </select>
+
+    <insert id="insertComment" parameterType="AgriComment" useGeneratedKeys="true" keyProperty="commentId">
+        insert into agri_comment(content, image_urls, rating, target_type, target_id,
+            is_anonymous, user_id, user_name, status, create_by, create_time)
+        values(#{content}, #{imageUrls}, #{rating}, #{targetType}, #{targetId},
+            #{isAnonymous}, #{userId}, #{userName}, #{status}, #{createBy}, #{createTime})
+    </insert>
+
+    <update id="updateCommentStatus">
+        update agri_comment set status = #{status} where comment_id = #{commentId}
+    </update>
+
+    <delete id="deleteCommentById" parameterType="Long">
+        delete from agri_comment where comment_id = #{commentId}
+    </delete>
+
+    <delete id="deleteCommentByIds" parameterType="Long">
+        delete from agri_comment where comment_id in
+        <foreach item="commentId" collection="array" open="(" separator="," close=")">#{commentId}</foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.agricultural.mapper.AgriFarmlandMapper">
+
+    <resultMap type="AgriFarmland" id="AgriFarmlandResult">
+        <id     property="farmlandId"   column="farmland_id"   />
+        <result property="farmlandName" column="farmland_name" />
+        <result property="boundaryData" column="boundary_data" />
+        <result property="area"         column="area"          />
+        <result property="cropType"     column="crop_type"     />
+        <result property="gridRows"     column="grid_rows"     />
+        <result property="gridCols"     column="grid_cols"     />
+        <result property="userId"       column="user_id"       />
+        <result property="status"       column="status"        />
+        <result property="createBy"     column="create_by"     />
+        <result property="createTime"   column="create_time"   />
+        <result property="updateBy"     column="update_by"     />
+        <result property="updateTime"   column="update_time"   />
+        <result property="remark"       column="remark"        />
+    </resultMap>
+
+    <sql id="selectFarmlandVo">
+        select farmland_id, farmland_name, boundary_data, area, crop_type,
+               grid_rows, grid_cols, user_id, status,
+               create_by, create_time, update_by, update_time, remark
+        from agri_farmland
+    </sql>
+
+    <select id="selectFarmlandList" parameterType="AgriFarmland" resultMap="AgriFarmlandResult">
+        <include refid="selectFarmlandVo"/>
+        <where>
+            <if test="farmlandName != null and farmlandName != ''">
+                AND farmland_name like concat('%', #{farmlandName}, '%')
+            </if>
+            <if test="cropType != null and cropType != ''">
+                AND crop_type = #{cropType}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectFarmlandById" parameterType="Long" resultMap="AgriFarmlandResult">
+        <include refid="selectFarmlandVo"/>
+        where farmland_id = #{farmlandId}
+    </select>
+
+    <insert id="insertFarmland" parameterType="AgriFarmland" useGeneratedKeys="true" keyProperty="farmlandId">
+        insert into agri_farmland
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="farmlandName != null and farmlandName != ''">farmland_name,</if>
+            <if test="boundaryData != null">boundary_data,</if>
+            <if test="area != null">area,</if>
+            <if test="cropType != null and cropType != ''">crop_type,</if>
+            <if test="gridRows != null">grid_rows,</if>
+            <if test="gridCols != null">grid_cols,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="farmlandName != null and farmlandName != ''">#{farmlandName},</if>
+            <if test="boundaryData != null">#{boundaryData},</if>
+            <if test="area != null">#{area},</if>
+            <if test="cropType != null and cropType != ''">#{cropType},</if>
+            <if test="gridRows != null">#{gridRows},</if>
+            <if test="gridCols != null">#{gridCols},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateFarmland" parameterType="AgriFarmland">
+        update agri_farmland
+        <set>
+            <if test="farmlandName != null and farmlandName != ''">farmland_name = #{farmlandName},</if>
+            <if test="boundaryData != null">boundary_data = #{boundaryData},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="cropType != null">crop_type = #{cropType},</if>
+            <if test="gridRows != null">grid_rows = #{gridRows},</if>
+            <if test="gridCols != null">grid_cols = #{gridCols},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where farmland_id = #{farmlandId}
+    </update>
+
+    <delete id="deleteFarmlandById" parameterType="Long">
+        delete from agri_farmland where farmland_id = #{farmlandId}
+    </delete>
+
+    <delete id="deleteFarmlandByIds" parameterType="Long">
+        delete from agri_farmland where farmland_id in
+        <foreach item="farmlandId" collection="array" open="(" separator="," close=")">
+            #{farmlandId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.agricultural.mapper.AgriEnvDataMapper">
+
+    <resultMap type="AgriEnvData" id="AgriEnvDataResult">
+        <id     property="dataId"         column="data_id"          />
+        <result property="farmlandId"     column="farmland_id"      />
+        <result property="farmlandName"   column="farmland_name"    />
+        <result property="temperature"    column="temperature"      />
+        <result property="humidity"       column="humidity"         />
+        <result property="lightIntensity" column="light_intensity"  />
+        <result property="soilMoisture"   column="soil_moisture"    />
+        <result property="windSpeed"      column="wind_speed"       />
+        <result property="recordTime"     column="record_time"      />
+        <result property="createBy"       column="create_by"        />
+        <result property="createTime"     column="create_time"      />
+    </resultMap>
+
+    <sql id="selectEnvDataVo">
+        select e.data_id, e.farmland_id, f.farmland_name,
+               e.temperature, e.humidity, e.light_intensity, e.soil_moisture,
+               e.wind_speed, e.record_time, e.create_by, e.create_time
+        from agri_env_data e
+        left join agri_farmland f on e.farmland_id = f.farmland_id
+    </sql>
+
+    <select id="selectEnvDataList" parameterType="AgriEnvData" resultMap="AgriEnvDataResult">
+        <include refid="selectEnvDataVo"/>
+        <where>
+            <if test="farmlandId != null">AND e.farmland_id = #{farmlandId}</if>
+        </where>
+        ORDER BY e.record_time DESC
+    </select>
+
+    <select id="selectEnvDataById" parameterType="Long" resultMap="AgriEnvDataResult">
+        <include refid="selectEnvDataVo"/>
+        where e.data_id = #{dataId}
+    </select>
+
+    <insert id="insertEnvData" parameterType="AgriEnvData" useGeneratedKeys="true" keyProperty="dataId">
+        insert into agri_env_data(farmland_id, temperature, humidity, light_intensity,
+            soil_moisture, wind_speed, record_time, create_by, create_time)
+        values(#{farmlandId}, #{temperature}, #{humidity}, #{lightIntensity},
+            #{soilMoisture}, #{windSpeed}, #{recordTime}, #{createBy}, #{createTime})
+    </insert>
+
+    <insert id="batchInsertEnvData" parameterType="java.util.List">
+        insert into agri_env_data(farmland_id, temperature, humidity, light_intensity,
+            soil_moisture, wind_speed, record_time, create_by, create_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.farmlandId}, #{item.temperature}, #{item.humidity}, #{item.lightIntensity},
+             #{item.soilMoisture}, #{item.windSpeed}, #{item.recordTime}, #{item.createBy}, #{item.createTime})
+        </foreach>
+    </insert>
+
+    <delete id="deleteEnvDataById" parameterType="Long">
+        delete from agri_env_data where data_id = #{dataId}
+    </delete>
+
+    <delete id="deleteEnvDataByIds" parameterType="Long">
+        delete from agri_env_data where data_id in
+        <foreach item="dataId" collection="array" open="(" separator="," close=")">#{dataId}</foreach>
+    </delete>
+
+    <delete id="deleteEnvDataByFarmlandId" parameterType="Long">
+        delete from agri_env_data where farmland_id = #{farmlandId}
+    </delete>
+
+</mapper>

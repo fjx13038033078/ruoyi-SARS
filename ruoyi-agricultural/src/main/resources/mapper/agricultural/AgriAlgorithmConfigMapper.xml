@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.agricultural.mapper.AgriAlgorithmConfigMapper">
+
+    <resultMap type="AgriAlgorithmConfig" id="AgriAlgorithmConfigResult">
+        <id     property="configId"      column="config_id"      />
+        <result property="algorithmType" column="algorithm_type" />
+        <result property="algorithmName" column="algorithm_name" />
+        <result property="paramJson"     column="param_json"     />
+        <result property="description"   column="description"    />
+        <result property="status"        column="status"         />
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <select id="selectConfigList" parameterType="AgriAlgorithmConfig" resultMap="AgriAlgorithmConfigResult">
+        select config_id, algorithm_type, algorithm_name, param_json, description, status, create_by, create_time
+        from agri_algorithm_config
+        <where>
+            <if test="algorithmType != null and algorithmType != ''">AND algorithm_type = #{algorithmType}</if>
+            <if test="status != null and status != ''">AND status = #{status}</if>
+        </where>
+        ORDER BY config_id
+    </select>
+
+    <select id="selectConfigByType" parameterType="String" resultMap="AgriAlgorithmConfigResult">
+        select config_id, algorithm_type, algorithm_name, param_json, description, status, create_by, create_time
+        from agri_algorithm_config
+        where algorithm_type = #{algorithmType} and status = '0'
+        limit 1
+    </select>
+
+</mapper>

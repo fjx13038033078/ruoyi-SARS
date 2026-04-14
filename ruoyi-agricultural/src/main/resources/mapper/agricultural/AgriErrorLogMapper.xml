@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.agricultural.mapper.AgriErrorLogMapper">
+
+    <resultMap type="AgriErrorLog" id="AgriErrorLogResult">
+        <id     property="errorId"      column="error_id"       />
+        <result property="errorType"    column="error_type"     />
+        <result property="errorMsg"     column="error_msg"      />
+        <result property="stackTrace"   column="stack_trace"    />
+        <result property="requestUrl"   column="request_url"    />
+        <result property="requestParam" column="request_param"  />
+        <result property="userId"       column="user_id"        />
+        <result property="userName"     column="user_name"      />
+        <result property="createTime"   column="create_time"    />
+    </resultMap>
+
+    <sql id="selectErrorLogVo">
+        select error_id, error_type, error_msg, stack_trace, request_url,
+               request_param, user_id, user_name, create_time
+        from agri_error_log
+    </sql>
+
+    <select id="selectErrorLogList" parameterType="AgriErrorLog" resultMap="AgriErrorLogResult">
+        <include refid="selectErrorLogVo"/>
+        <where>
+            <if test="errorType != null and errorType != ''">AND error_type = #{errorType}</if>
+            <if test="userName != null and userName != ''">AND user_name like concat('%',#{userName},'%')</if>
+            <if test="params != null and params.beginTime != null and params.beginTime != ''">
+                AND create_time &gt;= #{params.beginTime}
+            </if>
+            <if test="params != null and params.endTime != null and params.endTime != ''">
+                AND create_time &lt;= #{params.endTime}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectErrorLogById" parameterType="Long" resultMap="AgriErrorLogResult">
+        <include refid="selectErrorLogVo"/>
+        where error_id = #{errorId}
+    </select>
+
+    <insert id="insertErrorLog" parameterType="AgriErrorLog" useGeneratedKeys="true" keyProperty="errorId">
+        insert into agri_error_log(error_type, error_msg, stack_trace, request_url,
+            request_param, user_id, user_name, create_time)
+        values(#{errorType}, #{errorMsg}, #{stackTrace}, #{requestUrl},
+            #{requestParam}, #{userId}, #{userName}, #{createTime})
+    </insert>
+
+    <delete id="deleteErrorLogByIds" parameterType="Long">
+        delete from agri_error_log where error_id in
+        <foreach item="errorId" collection="array" open="(" separator="," close=")">#{errorId}</foreach>
+    </delete>
+
+    <delete id="cleanErrorLog">
+        delete from agri_error_log
+    </delete>
+
+</mapper>

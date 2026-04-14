@@ -3,19 +3,13 @@ package com.ruoyi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.scheduling.annotation.EnableAsync;
 
-/**
- * 启动程序
- * 
- * @author ruoyi
- */
+@EnableAsync
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
-public class RuoYiApplication
-{
-    public static void main(String[] args)
-    {
-        // System.setProperty("spring.devtools.restart.enabled", "false");
+public class RuoYiApplication {
+    public static void main(String[] args) {
         SpringApplication.run(RuoYiApplication.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  智慧农联节点部署推荐系统启动成功   ლ(´ڡ`ლ)ﾞ");
+        System.out.println("WSN Smart Agricultural System Started Successfully");
     }
 }

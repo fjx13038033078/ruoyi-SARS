@@ -11,31 +11,29 @@
 
     <artifactId>ruoyi-framework</artifactId>
 
-    <description>
-        framework框架核心
-    </description>
+    <description>framework妗嗘灦鏍稿績</description>
 
     <dependencies>
 
-        <!-- SpringBoot Web容器 -->
-         <dependency>
+        <!-- SpringBoot Web瀹瑰櫒 -->
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- SpringBoot 拦截器 -->
+        <!-- SpringBoot 鎷︽埅鍣?-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
-        <!-- 阿里数据库连接池 -->
+        <!-- 闃块噷鏁版嵁搴撹繛鎺ユ睜 -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- 验证码 -->
+        <!-- 楠岃瘉鐮?-->
         <dependency>
             <groupId>pro.fessional</groupId>
             <artifactId>kaptcha</artifactId>
@@ -47,13 +45,13 @@
             </exclusions>
         </dependency>
 
-        <!-- 获取系统信息 -->
+        <!-- 鑾峰彇绯荤粺淇℃伅 -->
         <dependency>
             <groupId>com.github.oshi</groupId>
             <artifactId>oshi-core</artifactId>
         </dependency>
 
-        <!-- 系统模块-->
+        <!-- 绯荤粺妯″潡-->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-system</artifactId>

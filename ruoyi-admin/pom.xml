@@ -12,7 +12,7 @@
     <artifactId>ruoyi-admin</artifactId>
 
     <description>
-        web服务入口
+        web鏈嶅姟鍏ュ彛
     </description>
 
     <dependencies>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional> <!-- 表示依赖不会传递 -->
+            <optional>true</optional>
         </dependency>
 
         <!-- swagger3-->
@@ -30,23 +30,30 @@
             <artifactId>springfox-boot-starter</artifactId>
         </dependency>
 
-        <!-- 防止进入swagger页面报类型转换错误，排除3.0.0中的引用，手动增加1.6.2版本 -->
+        <!-- 闃叉杩涘叆swagger椤甸潰鎶ョ被鍨嬭浆鎹㈤敊璇紝鎺掗櫎3.0.0涓殑寮曠敤锛屾墜鍔ㄥ鍔?.6.2鐗堟湰 -->
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-models</artifactId>
             <version>1.6.2</version>
         </dependency>
 
-         <!-- Mysql驱动包 -->
+         <!-- Mysql椹卞姩鍖?-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
-        <!-- 核心模块-->
+        <!-- 鏍稿績妯″潡-->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-framework</artifactId>
+        </dependency>
+
+        <!-- 鍐滀笟WSN妯″潡 -->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-agricultural</artifactId>
+            <version>${ruoyi.version}</version>
         </dependency>
 
     </dependencies>
@@ -58,7 +65,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.5.15</version>
                 <configuration>
-                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+                    <fork>true</fork>
                 </configuration>
                 <executions>
                     <execution>

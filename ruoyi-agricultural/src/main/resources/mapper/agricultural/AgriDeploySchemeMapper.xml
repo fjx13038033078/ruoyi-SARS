@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.agricultural.mapper.AgriDeploySchemeMapper">
+
+    <resultMap type="AgriDeployScheme" id="AgriDeploySchemeResult">
+        <id     property="schemeId"      column="scheme_id"      />
+        <result property="schemeName"    column="scheme_name"    />
+        <result property="farmlandId"    column="farmland_id"    />
+        <result property="farmlandName"  column="farmland_name"  />
+        <result property="algorithmType" column="algorithm_type" />
+        <result property="nodeCount"     column="node_count"     />
+        <result property="coverageRate"  column="coverage_rate"  />
+        <result property="energyBalance" column="energy_balance" />
+        <result property="resultJson"    column="result_json"    />
+        <result property="userId"        column="user_id"        />
+        <result property="status"        column="status"         />
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"      column="update_by"      />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"        column="remark"         />
+    </resultMap>
+
+    <sql id="selectSchemeVo">
+        select s.scheme_id, s.scheme_name, s.farmland_id, f.farmland_name,
+               s.algorithm_type, s.node_count, s.coverage_rate, s.energy_balance,
+               s.result_json, s.user_id, s.status,
+               s.create_by, s.create_time, s.update_by, s.update_time, s.remark
+        from agri_deploy_scheme s
+        left join agri_farmland f on s.farmland_id = f.farmland_id
+    </sql>
+
+    <select id="selectSchemeList" parameterType="AgriDeployScheme" resultMap="AgriDeploySchemeResult">
+        <include refid="selectSchemeVo"/>
+        <where>
+            <if test="farmlandId != null">AND s.farmland_id = #{farmlandId}</if>
+            <if test="algorithmType != null and algorithmType != ''">AND s.algorithm_type = #{algorithmType}</if>
+            <if test="status != null and status != ''">AND s.status = #{status}</if>
+            <if test="userId != null">AND s.user_id = #{userId}</if>
+        </where>
+        ORDER BY s.create_time DESC
+    </select>
+
+    <select id="selectSchemeById" parameterType="Long" resultMap="AgriDeploySchemeResult">
+        <include refid="selectSchemeVo"/>
+        where s.scheme_id = #{schemeId}
+    </select>
+
+    <insert id="insertScheme" parameterType="AgriDeployScheme" useGeneratedKeys="true" keyProperty="schemeId">
+        insert into agri_deploy_scheme(scheme_name, farmland_id, algorithm_type, node_count,
+            coverage_rate, energy_balance, result_json, user_id, status,
+            create_by, create_time, remark)
+        values(#{schemeName}, #{farmlandId}, #{algorithmType}, #{nodeCount},
+            #{coverageRate}, #{energyBalance}, #{resultJson}, #{userId}, #{status},
+            #{createBy}, #{createTime}, #{remark})
+    </insert>
+
+    <update id="updateScheme" parameterType="AgriDeployScheme">
+        update agri_deploy_scheme
+        <set>
+            <if test="schemeName != null">scheme_name = #{schemeName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where scheme_id = #{schemeId}
+    </update>
+
+    <delete id="deleteSchemeById" parameterType="Long">
+        delete from agri_deploy_scheme where scheme_id = #{schemeId}
+    </delete>
+
+    <delete id="deleteSchemeByIds" parameterType="Long">
+        delete from agri_deploy_scheme where scheme_id in
+        <foreach item="schemeId" collection="array" open="(" separator="," close=")">#{schemeId}</foreach>
+    </delete>
+
+</mapper>

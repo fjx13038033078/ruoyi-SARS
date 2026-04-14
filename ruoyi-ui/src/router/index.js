@@ -7,28 +7,28 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /**
- * Note: 路由配置项
+ * Note: 鐠侯垳鏁遍柊宥囩枂妞?
  *
- * hidden: true                     // 当设置 true 的时候该路由不会再侧边栏出现 如401，login等页面，或者如一些编辑页面/edit/1
- * alwaysShow: true                 // 当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
- *                                  // 只有一个时，会将那个子路由当做根路由显示在侧边栏--如引导页面
- *                                  // 若你想不管路由下面的 children 声明的个数都显示你的根路由
- *                                  // 你可以设置 alwaysShow: true，这样它就会忽略之前定义的规则，一直显示根路由
- * redirect: noRedirect             // 当设置 noRedirect 的时候该路由在面包屑导航中不可被点击
- * name:'router-name'               // 设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
- * query: '{"id": 1, "name": "ry"}' // 访问路由的默认传递参数
- * roles: ['admin', 'common']       // 访问路由的角色权限
- * permissions: ['a:a:a', 'b:b:b']  // 访问路由的菜单权限
+ * hidden: true                     // 瑜版捁顔曠純?true 閻ㄥ嫭妞傞崐娆掝嚉鐠侯垳鏁辨稉宥勭窗閸愬秳鏅舵潏瑙勭埉閸戣櫣骞?婵?01閿涘ogin缁涘銆夐棃顫礉閹存牞鈧懎顩ф稉鈧禍娑氱椽鏉堟垿銆夐棃?edit/1
+ * alwaysShow: true                 // 瑜版挷缍樻稉鈧稉顏囩熅閻㈠彉绗呴棃銏㈡畱 children 婢圭増妲戦惃鍕熅閻㈠崬銇囨禍?娑擃亝妞傞敍宀冨殰閸斻劋绱伴崣妯诲灇瀹撳苯顨滈惃鍕佸?-婵″倻绮嶆禒鍫曘€夐棃?
+ *                                  // 閸欘亝婀佹稉鈧稉顏呮閿涘奔绱扮亸鍡涘亝娑擃亜鐡欑捄顖滄暠瑜版挸浠涢弽纭呯熅閻㈣鲸妯夌粈鍝勬躬娓氀嗙珶閺?-婵″倸绱╃€靛ジ銆夐棃?
+ *                                  // 閼汇儰缍橀幆鍏呯瑝缁犅ょ熅閻㈠彉绗呴棃銏㈡畱 children 婢圭増妲戦惃鍕嚋閺佷即鍏橀弰鍓с仛娴ｇ姷娈戦弽纭呯熅閻?
+ *                                  // 娴ｇ姴褰叉禒銉啎缂?alwaysShow: true閿涘矁绻栭弽宄扮暊鐏忓彉绱拌箛鐣屾殣娑斿澧犵€规矮绠熼惃鍕潐閸掓瑱绱濇稉鈧惄瀛樻▔缁€鐑樼壌鐠侯垳鏁?
+ * redirect: noRedirect             // 瑜版捁顔曠純?noRedirect 閻ㄥ嫭妞傞崐娆掝嚉鐠侯垳鏁遍崷銊╂桨閸栧懎鐫夌€佃壈鍩呮稉顓濈瑝閸欘垵顫﹂悙鐟板毊
+ * name:'router-name'               // 鐠佹儳鐣剧捄顖滄暠閻ㄥ嫬鎮曠€涙绱濇稉鈧€规俺顩︽繅顐㈠晸娑撳秶鍔ф担璺ㄦ暏<keep-alive>閺冩湹绱伴崙铏瑰箛閸氬嫮顫掗梻顕€顣?
+ * query: '{"id": 1, "name": "ry"}' // 鐠佸潡妫剁捄顖滄暠閻ㄥ嫰绮拋銈勭炊闁帒寮弫?
+ * roles: ['admin', 'common']       // 鐠佸潡妫剁捄顖滄暠閻ㄥ嫯顫楅懝鍙夋綀闂?
+ * permissions: ['a:a:a', 'b:b:b']  // 鐠佸潡妫剁捄顖滄暠閻ㄥ嫯褰嶉崡鏇熸綀闂?
  * meta : {
-    noCache: true                   // 如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
-    title: 'title'                  // 设置该路由在侧边栏和面包屑中展示的名字
-    icon: 'svg-name'                // 设置该路由的图标，对应路径src/assets/icons/svg
-    breadcrumb: false               // 如果设置为false，则不会在breadcrumb面包屑中显示
-    activeMenu: '/system/user'      // 当路由设置了该属性，则会高亮相对应的侧边栏。
+    noCache: true                   // 婵″倹鐏夌拋鍓х枂娑撶皪rue閿涘苯鍨稉宥勭窗鐞?<keep-alive> 缂傛挸鐡?姒涙顓?false)
+    title: 'title'                  // 鐠佸墽鐤嗙拠銉ㄧ熅閻㈠崬婀笟褑绔熼弽蹇撴嫲闂堛垹瀵樼仦鎴滆厬鐏炴洜銇氶惃鍕倳鐎?
+    icon: 'svg-name'                // 鐠佸墽鐤嗙拠銉ㄧ熅閻㈣京娈戦崶鐐垼閿涘苯顕惔鏃囩熅瀵板墕rc/assets/icons/svg
+    breadcrumb: false               // 婵″倹鐏夌拋鍓х枂娑撶alse閿涘苯鍨稉宥勭窗閸︹暈readcrumb闂堛垹瀵樼仦鎴滆厬閺勫墽銇?
+    activeMenu: '/system/user'      // 瑜版捁鐭鹃悽杈啎缂冾喕绨＄拠銉ョ潣閹嶇礉閸掓瑤绱版妯瑰瘨閻╃顕惔鏃傛畱娓氀嗙珶閺嶅繈鈧?
   }
  */
 
-// 公共路由
+// ...
 export const constantRoutes = [
   {
     path: '/redirect',
@@ -70,7 +70,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/index'),
         name: 'Index',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
+        meta: { title: 'Home', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -84,13 +84,13 @@ export const constantRoutes = [
         path: 'profile',
         component: () => import('@/views/system/user/profile/index'),
         name: 'Profile',
-        meta: { title: '个人中心', icon: 'user' }
+        meta: { title: '娑擃亙姹夋稉顓炵妇', icon: 'user' }
       }
     ]
   }
 ]
 
-// 动态路由，基于用户权限动态去加载
+// ...
 export const dynamicRoutes = [
   {
     path: '/system/user-auth',
@@ -102,7 +102,7 @@ export const dynamicRoutes = [
         path: 'role/:userId(\\d+)',
         component: () => import('@/views/system/user/authRole'),
         name: 'AuthRole',
-        meta: { title: '分配角色', activeMenu: '/system/user' }
+        meta: { title: 'Deploy Visualize', activeMenu: '/system/user' }
       }
     ]
   },
@@ -116,7 +116,7 @@ export const dynamicRoutes = [
         path: 'user/:roleId(\\d+)',
         component: () => import('@/views/system/role/authUser'),
         name: 'AuthUser',
-        meta: { title: '分配用户', activeMenu: '/system/role' }
+        meta: { title: 'Deploy Visualize', activeMenu: '/system/role' }
       }
     ]
   },
@@ -130,13 +130,27 @@ export const dynamicRoutes = [
         path: 'index/:dictId(\\d+)',
         component: () => import('@/views/system/dict/data'),
         name: 'Data',
-        meta: { title: '字典数据', activeMenu: '/system/dict' }
+        meta: { title: 'Dict Data', activeMenu: '/system/dict' }
+      }
+    ]
+  },
+  {
+    path: '/agricultural/deploy',
+    component: Layout,
+    hidden: true,
+    permissions: ['agricultural:deploy:visualize'],
+    children: [
+      {
+        path: 'visualize/:schemeId(\\d+)',
+        component: () => import('@/views/agricultural/deploy/visualize'),
+        name: 'DeployVisualize',
+        meta: { title: 'Deploy Visualize', activeMenu: '/agricultural/deploy' }
       }
     ]
   },
 ]
 
-// 防止连续点击多次路由报错
+// Prevent duplicate route push errors
 let routerPush = Router.prototype.push;
 let routerReplace = Router.prototype.replace;
 // push
@@ -149,7 +163,7 @@ Router.prototype.replace = function push(location) {
 }
 
 export default new Router({
-  mode: 'history', // 去掉url中的#
+  mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
