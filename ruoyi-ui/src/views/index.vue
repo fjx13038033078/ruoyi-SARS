@@ -159,7 +159,7 @@ export default {
               left: 'center',
               top: 'center',
               style: {
-                text: '大学生学籍管理平台',
+                text: '智慧农联节点部署推荐系统',
                 fontSize: 80,
                 fontWeight: 'bold',
                 lineDash: [0, 200],

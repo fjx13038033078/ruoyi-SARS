@@ -253,7 +253,7 @@ CREATE TABLE `sys_notice` (
 
 LOCK TABLES `sys_notice` WRITE;
 /*!40000 ALTER TABLE `sys_notice` DISABLE KEYS */;
-INSERT INTO `sys_notice` VALUES (1,'欢迎大家使用','2',_binary '<p>大学生学籍管理平台开放，欢迎大家使用</p><p><a href=\"www.baidu,com\" rel=\"noopener noreferrer\" target=\"_blank\"><s>www.baidu,com</s></a></p>','0','admin','2024-02-28 22:23:43','admin','2025-02-11 16:17:06','管理员'),(2,'系统维护公告','1',_binary '<p>大学生学籍管理管理系统维护中，两天后正常开放</p>','0','admin','2024-02-28 22:23:43','admin','2025-01-09 09:55:27','管理员');
+INSERT INTO `sys_notice` VALUES (1,'欢迎大家使用','2',_binary '<p>智慧农联节点部署推荐平台开放，欢迎大家使用</p><p><a href=\"www.baidu,com\" rel=\"noopener noreferrer\" target=\"_blank\"><s>www.baidu,com</s></a></p>','0','admin','2024-02-28 22:23:43','admin','2025-02-11 16:17:06','管理员'),(2,'系统维护公告','1',_binary '<p>大学生学籍管理管理系统维护中，两天后正常开放</p>','0','admin','2024-02-28 22:23:43','admin','2025-01-09 09:55:27','管理员');
 /*!40000 ALTER TABLE `sys_notice` ENABLE KEYS */;
 UNLOCK TABLES;
 

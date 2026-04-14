@@ -178,6 +178,7 @@
         <module>ruoyi-framework</module>
         <module>ruoyi-system</module>
         <module>ruoyi-common</module>
+        <module>ruoyi-agricultural</module>
     </modules>
     <packaging>pom</packaging>
 
