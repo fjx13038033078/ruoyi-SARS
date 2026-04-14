@@ -10,6 +10,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
+/**
+ * 环境数据服务实现：单条插入写创建时间；{@link #generateSimulatedData} 在近 7 天时间窗内构造均匀步长并叠加随机抖动，各指标在预设物理区间内随机。
+ */
 @Service
 public class AgriEnvDataServiceImpl implements IAgriEnvDataService {
 
@@ -53,6 +56,8 @@ public class AgriEnvDataServiceImpl implements IAgriEnvDataService {
         }
         return envDataMapper.batchInsertEnvData(dataList);
     }
+
+    /** 在 [{@code min},{@code max}] 上均匀采样并保留两位小数 */
     private BigDecimal rand(Random random, double min, double max) {
         double val = min + random.nextDouble() * (max - min);
         return BigDecimal.valueOf(val).setScale(2, RoundingMode.HALF_UP);

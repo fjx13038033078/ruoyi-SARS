@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+/**
+ * 农田服务实现：委托 Mapper，新增/修改时写入当前时间。
+ */
 @Service
 public class AgriFarmlandServiceImpl implements IAgriFarmlandService {
 

@@ -15,6 +15,10 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 部署方案实现：{@link #generateScheme} 在单事务内插入方案主表与节点批量表；
+ * 覆盖算法写真实覆盖率与固定能量均衡占位；聚类算法当前将能量均衡得分同时写入覆盖率与能量均衡字段（与现有业务字段约定一致，便于列表展示）。
+ */
 @Service
 public class AgriDeploySchemeServiceImpl implements IAgriDeploySchemeService {
 
@@ -42,6 +46,10 @@ public class AgriDeploySchemeServiceImpl implements IAgriDeploySchemeService {
         return nodeMapper.selectNodesBySchemeId(schemeId);
     }
 
+    /**
+     * 流程：加载农田栅格 → 组装 {@link AlgorithmParam} → 分支调用 {@link CoverageOptimizer} 或 {@link ClusterOptimizer}
+     * → 持久化 {@link AgriDeployScheme}（含 JSON 结果）→ {@link AgriDeployNodeMapper#batchInsertNodes}。
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long generateScheme(Long farmlandId, String algorithmType, String createBy, Long userId) {
@@ -118,6 +126,7 @@ public class AgriDeploySchemeServiceImpl implements IAgriDeploySchemeService {
         return schemeMapper.updateScheme(scheme);
     }
 
+    /** 先按方案 ID 删除节点明细，再批量删除方案主表，保证外键/数据一致性。 */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int deleteSchemeByIds(Long[] schemeIds) {

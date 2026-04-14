@@ -4,21 +4,21 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 /**
- * Cluster Optimization Algorithm (LEACH-inspired + K-Means).
- * 1. Estimates total sensor count based on area and coverage radius.
- * 2. Randomly distributes sensor positions across the grid.
- * 3. Uses K-Means to partition sensors into clusters.
- * 4. Selects the sensor nearest to each cluster center as cluster head.
+ * 聚类部署（LEACH 风格 + K-Means）。
+ * <p><b>步骤：</b>（1）用农田面积与固定半径估算节点数 N，并保证 N ≥ 3K；（2）在 [0,C)×[0,R) 上均匀随机布点（种子42 可复现）；
+ * （3）K 个初始质心按 sqrt(K) 网格铺在场上；（4）标准 K-Means：分配 → 更新质心，质心裁剪在场内；（5）每簇取离质心最近的点为簇头，编码 CH**，其余为 S**，
+ * 簇头节点类型记为 sink、{@code clusterHead=true}，能量略高于普通节点。</p>
+ * <p><b>注意：</b>{@link #optimize} 内部半径写死为 3.0，与 {@link AlgorithmParam#getSensorRadius()} 解耦（演示用）。</p>
+ * <p><b>复杂度：</b>每轮 K-Means O(N·K)，最多 {@code maxIterations} 轮；总体线性于 N、K 的乘积。</p>
  */
 @Component
 public class ClusterOptimizer {
 
+    /** 预留：按簇比例选头（当前实现为每簇最近质心一个头） */
     private static final double CLUSTER_HEAD_RATIO = 0.1;
 
     /**
-     * Run cluster optimization
-     * @param param algorithm parameters
-     * @return list of deployed nodes
+     * 生成 N 个节点并聚类，返回列表顺序与随机布点顺序一致。
      */
     public List<NodeResult> optimize(AlgorithmParam param) {
         int rows = param.getGridRows();
@@ -87,6 +87,7 @@ public class ClusterOptimizer {
         return nodes;
     }
 
+    /** 在 sqrt(K)×sqrt(K) 网格上均匀铺开 K 个初始质心（确定性布局，{@code random} 未使用）。 */
     private double[][] initCenters(int rows, int cols, int k, Random random) {
         double[][] centers = new double[k][2];
         int sqrtK = (int) Math.ceil(Math.sqrt(k));
@@ -101,6 +102,7 @@ public class ClusterOptimizer {
         return centers;
     }
 
+    /** 欧氏距离下最近质心下标。 */
     private int nearestCenter(double[] pos, double[][] centers) {
         int best = 0;
         double minD = Double.MAX_VALUE;
@@ -111,6 +113,7 @@ public class ClusterOptimizer {
         return best;
     }
 
+    /** 按簇内点坐标求均值；空簇回退到场中心附近，并把质心限制在 [0,cols)、[0,rows) 内。 */
     private double[][] updateCenters(double[][] positions, int[] assignment, int k, int rows, int cols) {
         double[][] sum = new double[k][2];
         int[] cnt = new int[k];
@@ -132,7 +135,10 @@ public class ClusterOptimizer {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    /** Calculate energy balance score (100 = perfectly balanced, lower = more variance) */
+    /**
+     * 能量均衡得分：先算能量均值，再算总体标准差 std，返回 max(0, 100 - std)。
+     * <p>所有节点（含簇头）参与统计；std 越小得分越接近 100。</p>
+     */
     public double calcEnergyBalance(List<NodeResult> nodes) {
         if (nodes.isEmpty()) return 100.0;
         double sum = 0, sum2 = 0;

@@ -9,6 +9,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+/**
+ * 异常日志实现：{@link #recordError} 使用 {@code @Async} 异步入库，并对消息/堆栈/请求参数做长度截断，避免超大文本撑爆库表；持久化失败静默忽略。
+ */
 @Service
 public class AgriErrorLogServiceImpl implements IAgriErrorLogService {
     @Autowired

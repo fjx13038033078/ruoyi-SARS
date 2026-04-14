@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+/**
+ * 评论实现：新增时默认 {@code status=0}（待审）并写创建时间。
+ */
 @Service
 public class AgriCommentServiceImpl implements IAgriCommentService {
     @Autowired

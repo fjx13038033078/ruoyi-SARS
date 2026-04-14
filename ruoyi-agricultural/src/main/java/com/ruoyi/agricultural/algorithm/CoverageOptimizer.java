@@ -4,18 +4,19 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 /**
- * Coverage Optimization Algorithm (Greedy Grid-based).
- * Uses a greedy strategy: iteratively places sensor nodes at grid positions
- * that maximize new coverage gain until the target coverage rate is reached.
- * Finally adds a sink node at the center of the field.
+ * 基于栅格的覆盖优化（贪心）。
+ * <p><b>思路：</b>维护 {@code covered[r][c]}；每轮在全体格点上枚举候选位置，选择「新覆盖未覆盖格」数量最大的位置布设传感器；
+ * 重复直至覆盖率 ≥ {@link AlgorithmParam#getCoverageTarget()} 或无正增益。最后在农田几何中心追加一个 sink（较大半径，标记为簇头便于展示）。</p>
+ * <p><b>覆盖模型：</b>以欧氏距离平方 ≤ radius² 的圆盘内格子为可覆盖集合（与 {@link #calcGain} / {@link #markCovered} 一致）。</p>
+ * <p><b>复杂度直觉：</b>每轮 O(R·C·r²)（r 为半径上取整），轮数上界与目标覆盖率及增益分布有关；最坏可接近 O(节点数·R·C·r²)。</p>
  */
 @Component
 public class CoverageOptimizer {
 
     /**
-     * Run coverage optimization
-     * @param param algorithm parameters
-     * @return list of deployed nodes
+     * 执行覆盖贪心，返回传感器列表 + 末尾一个 sink。
+     * @param param 栅格规模、半径、目标覆盖率等
+     * @return 有序节点列表（算法输出顺序即布设顺序）
      */
     public List<NodeResult> optimize(AlgorithmParam param) {
         int rows = param.getGridRows();
@@ -75,6 +76,9 @@ public class CoverageOptimizer {
         return nodes;
     }
 
+    /**
+     * 若在 (r,c) 放置圆盘，能把多少当前仍为 false 的格子新标为已覆盖（只计数增量）。
+     */
     private int calcGain(boolean[][] covered, int rows, int cols, int r, int c, double radius) {
         int gain = 0;
         int ri = (int) Math.ceil(radius);
@@ -91,6 +95,7 @@ public class CoverageOptimizer {
         return gain;
     }
 
+    /** 将圆盘内所有格子置为已覆盖（不区分此前状态）。 */
     private void markCovered(boolean[][] covered, int rows, int cols, int r, int c, double radius) {
         int ri = (int) Math.ceil(radius);
         for (int dr = -ri; dr <= ri; dr++) {
@@ -105,7 +110,10 @@ public class CoverageOptimizer {
         }
     }
 
-    /** Calculate overall coverage rate percentage */
+    /**
+     * 按当前节点列表重算栅格覆盖率（百分比0–100）。
+     * <p>仅对 {@code nodeType=sensor} 执行 {@link #markCovered}，sink 不参与覆盖统计，与优化阶段「传感器圆盘 +单独 sink」语义一致。</p>
+     */
     public double calcCoverageRate(List<NodeResult> nodes, int rows, int cols) {
         boolean[][] covered = new boolean[rows][cols];
         for (NodeResult node : nodes) {
