@@ -26,9 +26,9 @@
       </el-form>
       <div class="algo-desc">
         <el-alert v-if="genForm.algorithmType === 'coverage'" type="info" :closable="false"
-          title="覆盖优化算法：采用贪心策略，在网格地图上迭代选择覆盖增益最大的位置放置传感器节点，直到达到目标覆盖率(默认90%)。适合需要最大化监测覆盖面积的场景。" />
+          title="覆盖优化算法：采用贪心策略，在网格地图上迭代选择覆盖增益最大的位置放置传感器节点，直到达到目标覆盖率（默认90%）。适合需要最大化监测覆盖面积的场景。" />
         <el-alert v-else type="success" :closable="false"
-          title="分簇优化算法：基于LEACH协议思想，结合K-Means聚类将传感器分组，每簇选出簇头节点负责数据汇聚转发，优化网络能耗均衡和通信效率。" />
+          title="分簇优化算法：基于 LEACH 协议思想，结合 K-Means 聚类将传感器分组，每簇选出簇头节点负责数据汇聚转发，优化网络能耗均衡和通信效率。" />
       </div>
     </el-card>
 
@@ -152,7 +152,7 @@ export default {
       }).finally(() => { this.genLoading = false })
     },
     handleVisualize(row) {
-      this.$router.push({ path: `/agricultural/deploy/visualize/${row.schemeId}` })
+      this.$router.push({ path: `/agricultural/deploy-detail/visualize/${row.schemeId}` })
     },
     handleConfirm(row) {
       this.$modal.confirm('是否确认该部署方案？').then(() => {

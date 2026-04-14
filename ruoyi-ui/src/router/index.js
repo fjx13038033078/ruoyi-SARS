@@ -135,7 +135,7 @@ export const dynamicRoutes = [
     ]
   },
   {
-    path: '/agricultural/deploy',
+    path: '/agricultural/deploy-detail',
     component: Layout,
     hidden: true,
     permissions: ['agricultural:deploy:visualize'],
