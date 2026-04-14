@@ -1,9 +1,7 @@
 
-# Demo
+# ruoyi-SARS（Smart Agricultural Link Node Deployment Recommendation System）
+智慧农联节点部署推荐系统
 
-## 说明
-
-1.  本套代码仅作为若依最简功能基础版本代码，没有任何实际业务功能。
 
 ## 内置功能
 
