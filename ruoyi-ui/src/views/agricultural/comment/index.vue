@@ -75,16 +75,16 @@
           </template>
         </el-table-column>
         <el-table-column label="评论内容" prop="content" :show-overflow-tooltip="true" min-width="260" />
-        <el-table-column label="图片" width="80" align="center">
-          <template slot-scope="scope">
-            <span v-if="scope.row.imageUrls">
-              <el-image v-for="(url, i) in scope.row.imageUrls.split(',')" :key="i"
-                :src="url" style="width:30px;height:30px;margin:1px" fit="cover"
-                :preview-src-list="scope.row.imageUrls.split(',')" />
-            </span>
-            <span v-else style="color:#c0c4cc">无</span>
-          </template>
-        </el-table-column>
+<!--        <el-table-column label="图片" width="80" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span v-if="scope.row.imageUrls">-->
+<!--              <el-image v-for="(url, i) in scope.row.imageUrls.split(',')" :key="i"-->
+<!--                :src="url" style="width:30px;height:30px;margin:1px" fit="cover"-->
+<!--                :preview-src-list="scope.row.imageUrls.split(',')" />-->
+<!--            </span>-->
+<!--            <span v-else style="color:#c0c4cc">无</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column label="状态" width="80" align="center">
           <template slot-scope="scope">
             <el-tag :type="scope.row.status === '0' ? 'success' : 'danger'" size="mini">
@@ -182,24 +182,59 @@ export default {
 <style scoped>
 .post-card { border-left: 4px solid #409eff; }
 
-/* 「评分」标签与五角星、分数垂直居中对齐（行高与 Element 默认表单项一致） */
+/*
+ * 「评分」与五角星、分数同一水平中线：
+ * Element 默认 label 为 float + 固定 line-height，与 el-rate 内图标/文字基线不一致，
+ * 故对本项整行改为 flex，并取消 label 的 float。
+ */
+.comment-rate-form-item.el-form-item {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+/* 去掉 Element 表单项 clearfix 伪元素，避免干扰 flex 垂直居中 */
+.comment-rate-form-item.el-form-item::before,
+.comment-rate-form-item.el-form-item::after {
+  display: none !important;
+  content: none !important;
+}
 .comment-rate-form-item ::v-deep .el-form-item__label {
-  line-height: 40px;
-  padding-top: 0;
-  padding-bottom: 0;
+  float: none !important;
+  width: 80px;
+  box-sizing: border-box;
+  text-align: right;
+  vertical-align: middle;
+  line-height: 1.5;
+  padding: 0 12px 0 0;
+  height: auto;
+  align-self: center;
 }
 .comment-rate-form-item ::v-deep .el-form-item__content {
-  line-height: 40px;
-  display: flex;
+  flex: 1;
+  min-width: 0;
+  margin-left: 0 !important;
+  line-height: 1;
+  display: flex !important;
   align-items: center;
+  padding: 0;
 }
-.comment-rate-form-item ::v-deep .el-form-item__content .el-rate {
+.comment-rate-form-item ::v-deep .el-rate {
   display: inline-flex;
   align-items: center;
+  line-height: 1;
+  height: auto;
+}
+.comment-rate-form-item ::v-deep .el-rate__item {
+  vertical-align: middle;
+}
+.comment-rate-form-item ::v-deep .el-rate__icon {
+  vertical-align: middle;
   line-height: 1;
 }
 .comment-rate-form-item ::v-deep .el-rate__text {
   line-height: 1;
   vertical-align: middle;
+  margin-left: 6px;
 }
 </style>
